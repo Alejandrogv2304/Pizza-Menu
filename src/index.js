@@ -57,14 +57,22 @@ function App(){
 }
 
 function Menu (){
-    return <main className="menu">
+  const pizzas= pizzaData;
+  const numPizzas = pizzas.length;
+    return (
+    <main className="menu">
         <h2>Nuestro Menú</h2>
+
+        {numPizzas > 0 && (<ul className="pizzas">
         {pizzaData.map((Piza)=>{
             return(
             <Pizza key={Piza.name} pizza={Piza}/>
             )
         })}
+        </ul>)}
+        
     </main>
+    )
 }
 
 function Header (){
@@ -83,7 +91,14 @@ function Footer (){
     console.log(isOpen);
 return( 
 <footer className="footer">
-    {new Date().toLocaleTimeString()} Estamos atendiendo en este momento
+    {isOpen && (
+      <div className="order">
+      <p>Estamos en servicio hasta {closedHour}:00 visitanos u ordena online</p>
+      
+      <button className="btn">Order</button>
+      </div>
+      
+    )}
 </footer>
 )
 //Así creamos un componente sin jsx
@@ -93,7 +108,7 @@ return(
 function Pizza({pizza}){
     const {name, ingredients, price,photoName, soldOut}= pizza;
     return(
-        <div className="pizza">
+        <li className="pizza">
             <img src={photoName} alt="Imagen de Pizza"/>
             <div>
                  <h3>{name}</h3>
@@ -101,7 +116,7 @@ function Pizza({pizza}){
                  <span>{price + 3}</span>
             </div>
         
-        </div>
+        </li>
     )
 }
 
