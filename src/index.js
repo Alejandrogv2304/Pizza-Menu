@@ -63,13 +63,20 @@ function Menu (){
     <main className="menu">
         <h2>Nuestro Menú</h2>
 
-        {numPizzas > 0 && (<ul className="pizzas">
+        
+
+        {numPizzas > 0 ? (
+          <>
+          <p>Autentica cocina italiana. 6 platos creativos para elegir.<br/>
+           Todos nuestros platillos son orgánicos y deliciosos</p>
+          <ul className="pizzas">
         {pizzaData.map((Piza)=>{
             return(
             <Pizza key={Piza.name} pizza={Piza}/>
             )
         })}
-        </ul>)}
+        </ul>
+        </>) : <p>Todavía estamos trabajando en nuestro menú. Por favor, vuelve después</p>}
         
     </main>
     )
@@ -91,29 +98,35 @@ function Footer (){
     console.log(isOpen);
 return( 
 <footer className="footer">
-    {isOpen && (
-      <div className="order">
-      <p>Estamos en servicio hasta {closedHour}:00 visitanos u ordena online</p>
-      
-      <button className="btn">Order</button>
-      </div>
-      
-    )}
+    {isOpen ? 
+      <Order openHour={openHour} closedHour={closedHour}/>
+    : <p>Estaremos felices de recibirte entre {openHour}:00 y las {closedHour}:00.</p>}
 </footer>
 )
 //Así creamos un componente sin jsx
     // return React.createElement('footer', null, "Estamos atendiendo en este momento")
 }
 
+function Order({openHour,closedHour}){
+  return(
+    <div className="order">
+      <p>Estamos en servicio desde {openHour}:00 hasta las {closedHour}:00 visitanos u ordena online</p>
+      
+      <button className="btn">Order</button>
+      </div>
+  )
+}
+
 function Pizza({pizza}){
     const {name, ingredients, price,photoName, soldOut}= pizza;
+   
     return(
-        <li className="pizza">
+        <li className={`pizza ${soldOut ? 'sold-out' :''}`}>
             <img src={photoName} alt="Imagen de Pizza"/>
             <div>
                  <h3>{name}</h3>
                  <p>{ingredients}</p>
-                 <span>{price + 3}</span>
+                 {soldOut ? <span>SOLD OUT</span>: <span>{price }</span>}
             </div>
         
         </li>
